@@ -23,8 +23,8 @@ class HTVA_OT_apply_defaults_to_scene(Operator):
         p.yaw_strength_deg = prefs.default_yaw
         p.pitch_strength_deg = prefs.default_pitch
         p.zoom_strength = prefs.default_zoom
-        p.min_distance = prefs.default_min_dist
         p.max_distance = prefs.default_max_dist
+        p.min_distance = prefs.default_min_dist
         p.smoothing_alpha = prefs.default_alpha
         p.deadzone = prefs.default_deadzone
 
@@ -61,9 +61,9 @@ class HTVA_AddonPreferences(bpy.types.AddonPreferences):
 
     default_yaw: FloatProperty(name="Default Yaw (deg)", default=25.0, min=0.0, max=100.0)
     default_pitch: FloatProperty(name="Default Pitch (deg)", default=25.0, min=0.0, max=100.0)
-    default_zoom: FloatProperty(name="Default Zoom Strength", default=2.0, min=0.0, max=20.0)
-    default_min_dist: FloatProperty(name="Default Min Distance", default=0.2, min=0.001, max=1000.0)
-    default_max_dist: FloatProperty(name="Default Max Distance", default=20.0, min=0.01, max=10000.0)
+    default_zoom: FloatProperty(name="Default Zoom Strength", default=5.0, min=0.0, max=100.0)
+    default_max_dist: FloatProperty(name="Default Max Distance", default=1000.0, min=0.01, max=10000.0) 
+    default_min_dist: FloatProperty(name="Default Min Distance", default=0.2, min=0.001, max=10000.0)
     default_alpha: FloatProperty(name="Default Smooth Alpha", default=0.2, min=0.01, max=1.0)
     default_deadzone: FloatProperty(name="Default Deadzone", default=0.03, min=0.0, max=0.5)
 
@@ -75,8 +75,8 @@ class HTVA_AddonPreferences(bpy.types.AddonPreferences):
         col.prop(self, "default_yaw")
         col.prop(self, "default_pitch")
         col.prop(self, "default_zoom")
-        col.prop(self, "default_min_dist")
         col.prop(self, "default_max_dist")
+        col.prop(self, "default_min_dist")
         col.prop(self, "default_alpha")
         col.prop(self, "default_deadzone")
 
@@ -91,7 +91,6 @@ class HTVA_AddonPreferences(bpy.types.AddonPreferences):
             import rna_keymap_ui
             wm = context.window_manager
 
-            # Use USER keyconfig so changes persist
             kc = wm.keyconfigs.user
             km = kc.keymaps.get("3D View")
             if not km:
@@ -113,7 +112,7 @@ class HTVA_AddonPreferences(bpy.types.AddonPreferences):
 
                 layout.separator(factor=0.5)
 
-            draw_hotkey("htva.toggle", "Toggle View Assist")
+            draw_hotkey("htva.toggle", "Toggle Head Tracking")
             draw_hotkey("htva.launch_tracker_bg", "Launch Tracker (Background)")
             draw_hotkey("htva.stop_tracker", "Stop Tracker")
 

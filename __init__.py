@@ -1,10 +1,10 @@
 bl_info = {
-    "name": "Head-Tracked View Assist",
+    "name": "Head Tracking",
     "author": "IndoorDragon (indoordragon.com | github.com/indoordragon)",
-    "version": (0, 1, 7),
+    "version": (0, 2, 0),
     "blender": (4, 2, 0),
-    "location": "View3D > Sidebar > View Assist",
-    "description": "Webcam head-tracking driven viewport assist via UDP (bundled tracker executable).",
+    "location": "View3D > Sidebar > Head Tracking",
+    "description": "Webcam head tracking for viewport control via UDP.",
     "warning": "",
     "doc_url": "https://github.com/indoordragon",
     "category": "3D View",
@@ -23,7 +23,7 @@ from .operators import (
     HTVA_OT_launch_tracker,
     HTVA_OT_launch_tracker_bg,
     HTVA_OT_stop_tracker,
-    htva_stop_tracker_on_exit,  # NEW: exit cleanup
+    htva_stop_tracker_on_exit,
 )
 from .ui import HTVA_PT_panel
 from .prefs import (
@@ -99,16 +99,16 @@ def register_keymaps():
 
     km = kc.keymaps.new(name="3D View", space_type='VIEW_3D')
 
-    # Toggle View Assist (existing)
+    # Toggle Head Tracking
     kmi = km.keymap_items.new("htva.toggle", type='Q', value='PRESS', alt=True, shift=True)
     _addon_keymaps.append((km, kmi))
 
-    # Launch Tracker (Background) (new)
+    # Launch Tracker (Background)
     # Default: Alt+Shift+W
     kmi = km.keymap_items.new("htva.launch_tracker_bg", type='W', value='PRESS', alt=True, shift=True)
     _addon_keymaps.append((km, kmi))
 
-    # Stop Tracker (new)
+    # Stop Tracker
     # Default: Alt+Shift+S
     kmi = km.keymap_items.new("htva.stop_tracker", type='S', value='PRESS', alt=True, shift=True)
     _addon_keymaps.append((km, kmi))
@@ -152,8 +152,8 @@ def register():
     if _htva_apply_defaults_on_load not in bpy.app.handlers.load_post:
         bpy.app.handlers.load_post.append(_htva_apply_defaults_on_load)
 
-    # NEW: Ensure tracker stops when Blender exits.
-    # We guard so it doesn't get registered multiple times during reload/dev.
+    # Ensure tracker stops when Blender exits.
+    # Guard so it does not get registered multiple times during reload/dev.
     if not _atexit_registered:
         try:
             atexit.register(htva_stop_tracker_on_exit)
@@ -170,13 +170,13 @@ def unregister():
     if _htva_apply_defaults_on_load in bpy.app.handlers.load_post:
         bpy.app.handlers.load_post.remove(_htva_apply_defaults_on_load)
 
-    # NEW: If user disables/uninstalls the add-on, stop the tracker immediately too.
+    # If user disables/uninstalls the add-on, stop the tracker immediately too.
     try:
         htva_stop_tracker_on_exit()
     except Exception:
         pass
 
-    # NEW: Unregister exit hook (helps during add-on reloads in development).
+    # Unregister exit hook (helps during add-on reloads in development).
     if _atexit_registered:
         try:
             atexit.unregister(htva_stop_tracker_on_exit)
