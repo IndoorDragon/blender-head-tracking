@@ -273,7 +273,7 @@ jobs:
           import subprocess
           from pathlib import Path
 
-          addon_root_name = "head_tracked_view_assist"
+          addon_root_name = "blender_head_tracking"
           is_macos = platform.system() == "Darwin"
 
           repo = Path(".").resolve()
@@ -375,12 +375,12 @@ jobs:
           set -euo pipefail
           TAG="${GITHUB_REF_NAME}"
           PLATFORM="${{ matrix.artifact_suffix }}"
-          ZIP="head_tracked_view_assist_${TAG}_${PLATFORM}.zip"
+          ZIP="blender_head_tracking_${TAG}_${PLATFORM}.zip"
 
           rm -f "release_out/$ZIP"
 
           ditto -c -k --sequesterRsrc --keepParent \
-            "release_stage/head_tracked_view_assist" \
+            "release_stage/blender_head_tracking" \
             "release_out/$ZIP"
 
           ls -la "release_out/$ZIP"
@@ -400,7 +400,7 @@ jobs:
 
           stage = Path("release_stage")
           out_dir = Path("release_out")
-          zip_name = f"head_tracked_view_assist_{tag}_{platform}.zip"
+          zip_name = f"blender_head_tracking_{tag}_{platform}.zip"
           zip_path = out_dir / zip_name
 
           with zipfile.ZipFile(zip_path, "w", compression=zipfile.ZIP_DEFLATED) as z:

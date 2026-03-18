@@ -170,7 +170,7 @@ jobs:
           set -euo pipefail
           TAG="${{ inputs.tag }}"
           PLATFORM="${{ inputs.platform }}"
-          ZIP="head_tracked_view_assist_${TAG}_${PLATFORM}.zip"
+          ZIP="blender_head_tracking_${TAG}_${PLATFORM}.zip"
 
           echo "Downloading: $ZIP"
           gh release download "$TAG" --repo "$GITHUB_REPOSITORY" --pattern "$ZIP" --clobber
@@ -182,14 +182,14 @@ jobs:
           set -euo pipefail
           TAG="${{ inputs.tag }}"
           PLATFORM="${{ inputs.platform }}"
-          ZIP="head_tracked_view_assist_${TAG}_${PLATFORM}.zip"
+          ZIP="blender_head_tracking_${TAG}_${PLATFORM}.zip"
 
           rm -rf workdir
           mkdir -p workdir
 
           ditto -x -k "$ZIP" workdir
 
-          APP_ZIP_PATH="workdir/head_tracked_view_assist/tracker/tracker.app.zip"
+          APP_ZIP_PATH="workdir/blender_head_tracking/tracker/tracker.app.zip"
           if [ ! -f "$APP_ZIP_PATH" ]; then
             echo "ERROR: tracker.app.zip not found at: $APP_ZIP_PATH"
             find workdir -maxdepth 6 -print
@@ -197,12 +197,12 @@ jobs:
           fi
 
           echo "Addon tracker contents before extraction:"
-          ls -la "workdir/head_tracked_view_assist/tracker" || true
+          ls -la "workdir/blender_head_tracking/tracker" || true
 
           echo "Extracting tracker.app.zip for stapling verification..."
-          ditto -x -k "$APP_ZIP_PATH" "workdir/head_tracked_view_assist/tracker"
+          ditto -x -k "$APP_ZIP_PATH" "workdir/blender_head_tracking/tracker"
 
-          APP_PATH="workdir/head_tracked_view_assist/tracker/tracker.app"
+          APP_PATH="workdir/blender_head_tracking/tracker/tracker.app"
           if [ ! -d "$APP_PATH" ]; then
             echo "ERROR: tracker.app not found after extraction at: $APP_PATH"
             find workdir -maxdepth 6 -print
@@ -247,7 +247,7 @@ jobs:
           rm -rf "$APP_PATH"
 
           echo "Final addon tracker contents:"
-          ls -la "workdir/head_tracked_view_assist/tracker" || true
+          ls -la "workdir/blender_head_tracking/tracker" || true
 
       - name: Re-zip (ditto) and re-upload to the Release (overwrite)
         shell: bash
@@ -257,12 +257,12 @@ jobs:
           set -euo pipefail
           TAG="${{ inputs.tag }}"
           PLATFORM="${{ inputs.platform }}"
-          ZIP="head_tracked_view_assist_${TAG}_${PLATFORM}.zip"
+          ZIP="blender_head_tracking_${TAG}_${PLATFORM}.zip"
 
           rm -f "$ZIP"
 
           ditto -c -k --sequesterRsrc --keepParent \
-            "workdir/head_tracked_view_assist" \
+            "workdir/blender_head_tracking" \
             "$ZIP"
 
           ls -la "$ZIP"

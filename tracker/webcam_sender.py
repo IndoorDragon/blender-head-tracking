@@ -425,7 +425,7 @@ write_pid_file()
 # ----------------------------
 # Preview window setup
 # ----------------------------
-WINDOW_NAME = "Head-Tracked View Assist — Tracker"
+WINDOW_NAME = "Blender Head Tracking — Webcam Tracker"
 if SHOW_PREVIEW:
     try:
         cv2.namedWindow(WINDOW_NAME, cv2.WINDOW_NORMAL)
